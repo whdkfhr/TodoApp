@@ -28,7 +28,7 @@ public class application {
                 todo.setTitle(name);
                 repository.save(todo);
             });
-            repository.findAll().forEach(System.out::println);
+//            repository.findAll().forEach(System.out::println);
         };
     }
 
