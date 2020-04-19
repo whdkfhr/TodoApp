@@ -22,7 +22,7 @@
                 :key="todo.id"
                 :class="{ completed: todo.completed, editing: todo == editedTodo }">
               <div class="view">
-                <input class="toggle" type="checkbox" v-model="todo.completed" @change="completeTodo(todo)">
+                <input class="toggle" type="checkbox" v-model="todo.completed" @change="completeTodo(todo)" />
                 <label @dblclick="editTodo(todo)">{{ todo.title }}</label>
                 <button class="destroy" @click="removeTodo(todo)"></button>
               </div>
@@ -57,6 +57,7 @@
 </template>
 
 <script>
+  import api from '../Api';
 
   // visibility filters
   let filters = {
@@ -94,12 +95,18 @@
       }
     },
 
-    mounted() {
-      // inject some startup data
-      this.todos = [{title: 'Drink coffee', completed:false},{title: 'Write REST API', completed:false}];
-      // hide the loading message
-      this.loading = false;
-    },
+   mounted() {
+     api.getAll()
+       .then(response => {
+         this.$log.debug("Data loaded: ", response.data)
+         this.todos = response.data
+     })
+       .catch(error => {
+         this.$log.debug(error)
+         this.error = "Failed to load todos"
+     })
+       .finally(() => this.loading = false)
+   },
 
     // computed properties
     // http://vuejs.org/guide/computed.html
