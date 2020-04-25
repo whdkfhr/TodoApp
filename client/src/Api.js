@@ -22,3 +22,4 @@ export default {
   // (D)elete
   removeForId: (id) => instance.delete('todos/'+id)
 }
+
